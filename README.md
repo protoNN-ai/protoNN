@@ -1,2 +1,0 @@
-# protoNN
-neural prototyping framework 

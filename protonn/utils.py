@@ -13,14 +13,13 @@ def get_time_str():
 
 
 def save_data_json(data, name_file):
-    # path = "/"
-    # todo path as basedir
-    # if not os.path.isdir(path):
-        # os.makedirs(path)
+    path = os.path.realpath(os.path.dirname(name_file))
+    os.makedirs(path, exist_ok=True)
     s = json.dumps(data, ensure_ascii=False, indent=4, sort_keys=True)
     f = open(name_file, 'w')
     print(s, file=f)
     f.close()
+
 
 
 def save_options(options, path):
@@ -30,7 +29,7 @@ def save_options(options, path):
 def detect_local_imports():
     r = re.compile('\nimport \w+|from \w+')
     with open(sys.argv[0]) as f:
-        code = f.read()    
+        code = f.read()
     imports = [i.split(' ')[-1] for i in r.findall(code)]
     dirs = [f.split('.')[0] for f in os.listdir() if '.py' in f]
     return [dir + '.py' for dir in set(dirs).intersection(imports)]

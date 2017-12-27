@@ -21,7 +21,6 @@ def save_data_json(data, name_file):
     f.close()
 
 
-
 def save_options(options, path):
     save_data_json(options, os.path.join(path, "options.json"))
 

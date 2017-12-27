@@ -22,3 +22,14 @@ neural prototyping framework
 .. image:: https://coveralls.io/repos/github/undertherain/protoNN/badge.svg?branch=master
     :target: https://coveralls.io/github/undertherain/protoNN?branch=master
 
+
+contributors
+------------
+
+Aleksandr Drozd
+
+Mohamed Wahib
+
+Maxim Shpakovich
+
+For licensing information, please see `<LICENSE>`_

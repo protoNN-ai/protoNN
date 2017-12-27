@@ -15,14 +15,10 @@ protoNN
 
 neural prototyping framework
 
-.. image:: https://api.travis-ci.org/undertherain/pycontextfree.svg?branch=master
-    :target: https://travis-ci.org/undertherain/pycontextfree
+.. image:: https://api.travis-ci.org/undertherain/protoNN.svg?branch=master
+    :target: https://travis-ci.org/undertherain/protoNN
     :alt: build status from Travis CI
 
-.. image:: https://coveralls.io/repos/github/undertherain/pycontextfree/badge.svg?branch=master
-    :target: https://coveralls.io/github/undertherain/pycontextfree?branch=master
-
-.. image:: https://badge.fury.io/py/contextfree.svg
-    :target: https://badge.fury.io/py/contextfree
-    :alt: pypi version
+.. image:: https://coveralls.io/repos/github/undertherain/protoNN/badge.svg?branch=master
+    :target: https://coveralls.io/github/undertherain/protoNN?branch=master
 

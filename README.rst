@@ -22,6 +22,9 @@ neural prototyping framework
 .. image:: https://coveralls.io/repos/github/undertherain/protoNN/badge.svg?branch=master
     :target: https://coveralls.io/github/undertherain/protoNN?branch=master
 
+.. image:: https://badge.fury.io/py/protonn.svg
+    :target: https://badge.fury.io/py/protonn
+    :alt: pypi version
 
 How do I get set up?
 --------------------

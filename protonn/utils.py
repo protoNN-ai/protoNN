@@ -21,8 +21,8 @@ def save_data_json(data, name_file):
     f.close()
 
 
-def save_options(options, path):
-    save_data_json(options, os.path.join(path, "options.json"))
+# def save_options(options, path):
+    # save_data_json(options, os.path.join(path, "options.json"))
 
 
 def detect_local_imports():
@@ -36,6 +36,9 @@ def detect_local_imports():
 
 def save_code(path):
     os.makedirs(path, exist_ok=True)
+    # current_file = os.path.realpath(__file__)
+    # print("ARGV0:", sys.argv[0])
+    # print("ARGV0:", current_file)
     shutil.copy2(sys.argv[0], os.path.join(path, sys.argv[0]))
     for im in detect_local_imports():
         shutil.copy2(im, os.path.join(path, im))

@@ -23,17 +23,13 @@ def save_data_json(data, name_file):
     f.close()
 
 
-# def save_options(options, path):
-    # save_data_json(options, os.path.join(path, "options.json"))
-
-
-def _detect_local_imports():
-    r = re.compile('\nimport \w+|from \w+')
-    with open(sys.argv[0]) as f:
-        code = f.read()
-    imports = [i.split(' ')[-1] for i in r.findall(code)]
-    dirs = [f.split('.')[0] for f in os.listdir() if '.py' in f]
-    return [dir + '.py' for dir in set(dirs).intersection(imports)]
+# def _detect_local_imports():
+#    r = re.compile('\nimport \w+|from \w+')
+#    with open(sys.argv[0]) as f:
+#        code = f.read()
+#    imports = [i.split(' ')[-1] for i in r.findall(code)]
+#    dirs = [f.split('.')[0] for f in os.listdir() if '.py' in f]
+#    return [dir + '.py' for dir in set(dirs).intersection(imports)]
 
 
 def _get_caller_folder(stack_level: int = 1) -> pathlib.Path:
@@ -62,6 +58,3 @@ def save_code(path):
                 path_dest = os.path.join(path, rel_root, file)
                 shutil.copy2(os.path.join(root, file), path_dest)
                 print(os.path.join(root, file))    # current_file = os.path.realpath(__file__)
-    # shutil.copy2(sys.argv[0], os.path.join(path, sys.argv[0]))
-    # for im in detect_local_imports():
-        # shutil.copy2(im, os.path.join(path, im))

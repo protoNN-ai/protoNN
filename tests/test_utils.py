@@ -13,8 +13,8 @@ class Tests(unittest.TestCase):
         stamp = get_time_str()
         logger.info("test_timestamp: " + stamp)
 
-    # def test_save_code(self):
-        # save_code("/tmp/protonn/saved_code")
+    def test_save_code(self):
+        save_code("/tmp/protonn/saved_code")
 
     def test_main(self):
         logger.info("test save json")

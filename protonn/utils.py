@@ -4,6 +4,8 @@ import sys
 import shutil
 import json
 import re
+import inspect
+import pathlib
 
 
 def get_time_str():
@@ -25,7 +27,7 @@ def save_data_json(data, name_file):
     # save_data_json(options, os.path.join(path, "options.json"))
 
 
-def detect_local_imports():
+def _detect_local_imports():
     r = re.compile('\nimport \w+|from \w+')
     with open(sys.argv[0]) as f:
         code = f.read()
@@ -34,11 +36,32 @@ def detect_local_imports():
     return [dir + '.py' for dir in set(dirs).intersection(imports)]
 
 
+def _get_caller_folder(stack_level: int = 1) -> pathlib.Path:
+    """Determine folder in which the caller module of a function is located."""
+    frame_info = inspect.getouterframes(inspect.currentframe())[stack_level]
+    caller_path = frame_info[1]  # frame_info.filename
+
+    here = pathlib.Path(caller_path).absolute().resolve()
+    if not here.is_file():
+        raise RuntimeError('path "{}" was expected to be a file'.format(here))
+    here = here.parent
+    if not here.is_dir():
+        raise RuntimeError('path "{}" was expected to be a directory'.format(here))
+    return here
+
+
 def save_code(path):
     os.makedirs(path, exist_ok=True)
-    # current_file = os.path.realpath(__file__)
-    # print("ARGV0:", sys.argv[0])
-    # print("ARGV0:", current_file)
-    shutil.copy2(sys.argv[0], os.path.join(path, sys.argv[0]))
-    for im in detect_local_imports():
-        shutil.copy2(im, os.path.join(path, im))
+    path_caller = _get_caller_folder()
+    print("caller path:", path_caller)
+    for root, dirs, files in os.walk(path_caller):
+        rel_root = os.path.relpath(root, path_caller)
+        for file in files:
+            if file.endswith(".py"):
+                os.makedirs(os.path.join(path, rel_root), exist_ok=True)
+                path_dest = os.path.join(path, rel_root, file)
+                shutil.copy2(os.path.join(root, file), path_dest)
+                print(os.path.join(root, file))    # current_file = os.path.realpath(__file__)
+    # shutil.copy2(sys.argv[0], os.path.join(path, sys.argv[0]))
+    # for im in detect_local_imports():
+        # shutil.copy2(im, os.path.join(path, im))

@@ -1,7 +1,12 @@
+import protonn
 import inspect
 import ast
 
-#  some singleton class here to keep track of all parameter
+
+class _Tracker:
+    """singleton class here to keep track of all parameters"""
+    def __init__(self):
+        self.params = []
 
 
 def view(scope):
@@ -33,4 +38,7 @@ def observe(x, stack_level=1):
 
 
 def dump(path):
-    print("dump not implemented yet")
+    print("dumping parameters:")
+    d = protonn.parameters._parameters
+    for param in d:
+        print(param, d[param])

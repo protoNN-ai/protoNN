@@ -1,7 +1,7 @@
 """Tests for parameters"""
 import unittest
 import logging
-from protonn.parameters.core import view, observe
+from protonn.parameters.core import view, observe, dump
 
 logger = logging.getLogger(__name__)
 
@@ -19,5 +19,6 @@ class Tests(unittest.TestCase):
 
         logger.info("test observe")
         y = 23
-        #name = observe(y)
-        #assert name == "y"
+        # name = observe(y)
+        # assert name == "y"
+        dump("/tmp/protonn")

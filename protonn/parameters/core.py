@@ -3,16 +3,11 @@ import inspect
 import ast
 
 
-class _Tracker:
-    """singleton class here to keep track of all parameters"""
-    def __init__(self):
-        self.params = []
-
-
 def view(scope):
     """this function shold be used as a decorato"""
 
     print("test")
+    # parse the srouruce and register all type-hinted vars
     return scope
 
 

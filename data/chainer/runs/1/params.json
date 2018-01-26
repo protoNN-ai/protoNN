@@ -1,0 +1,5 @@
+{
+    "batch_size": 64,
+    "path_results": "/work/alex/data/DL_outs/Kaggle/2017.10_Icebergs/17.12.23_13.30.51",
+    "test_run": false
+}

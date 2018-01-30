@@ -1,12 +1,16 @@
 import protonn
 import inspect
 import ast
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def view(scope):
     """this function shold be used as a decorato"""
 
-    print("test")
+    logger.debug("parameter.vew got a scope to handle")
+
     # parse the srouruce and register all type-hinted vars
     return scope
 

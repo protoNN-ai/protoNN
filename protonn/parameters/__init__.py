@@ -1,2 +1,3 @@
-from .core import view
+from .core import dump, view
+
 _parameters = {}

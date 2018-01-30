@@ -1,6 +1,9 @@
 # this example shows different ways to track a parameter
 
+import logging
 import protonn.parameters
+
+logging.basicConfig(level=logging.DEBUG)
 
 
 @protonn.parameters.view

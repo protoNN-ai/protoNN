@@ -13,11 +13,9 @@ def make_channels_last(img):
     return img
 
 
-def set_size(img, shape):
-    res = img
-    # pad1 = dim_max - img.shape[0]
-    # pad1 = max(0, pad1)
-    # pad2 = dim_max - img.shape[1]
-    # pad2 = max(0, pad2)
-    # res = np.lib.pad(img, ((0, pad1), (0, pad2), (0, 0)), 'constant', constant_values=value)
+def set_size(img, shape, value=1):
+    slices_crop = tuple(slice(0, i) for i in shape)
+    res = img[slices_crop]
+    pads = tuple((0, max(shape[i] - img.shape[i], 0)) for i in range(len(shape)))
+    res = np.lib.pad(res, pads, 'constant', constant_values=value)
     return res

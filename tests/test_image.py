@@ -21,3 +21,9 @@ class Tests(unittest.TestCase):
         logger.info("resored shape: {}".format(img.shape))
         shape2 = img.shape
         assert shape1 == shape2
+
+    def test_crop_pad(self):
+        a = np.ones((6, 6, 6))
+        shape = (3, 4, 8)
+        result = protonn.data.imaging.misc.set_size(a, shape)
+        self.assertEqual(shape, result.shape)

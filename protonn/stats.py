@@ -13,7 +13,11 @@ def load_single_run(path):
     time_epoch = [df["elapsed_time"][0]] + time_epoch
     df["epoch_time"] = time_epoch
     for key in d:
-        df[key] = d[key]
+        try:
+            df[key] = d[key]
+        except:
+            print("could not export key ", key)
+        # TODO: flatten hierarchical metadata entries
     return df
 
 

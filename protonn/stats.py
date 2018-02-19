@@ -18,5 +18,12 @@ def load_single_run(path):
 
 
 def load_multiple_runs(path):
-    experiments = [load_single_run(os.path.join(path, d)) for d in os.listdir(path)]
+    experiments = []
+    for d in os.listdir(path):
+        try:
+            experiments.append(load_single_run(os.path.join(path, d)))
+        except Exception as e:
+            print("could not load ", d)
+            pass
+            # raise e
     return experiments

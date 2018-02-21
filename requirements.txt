@@ -1,2 +1,5 @@
 numpy
 pandas
+static_typing
+typed_ast
+typed_astunparse

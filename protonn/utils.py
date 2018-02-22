@@ -6,6 +6,10 @@ import json
 import re
 import inspect
 import pathlib
+import logging
+
+
+_LOG = logging.getLogger(__name__)
 
 
 def get_time_str():
@@ -49,7 +53,7 @@ def _get_caller_folder(stack_level: int = 1) -> pathlib.Path:
 def save_code(path):
     os.makedirs(path, exist_ok=True)
     path_caller = _get_caller_folder()
-    print("caller path:", path_caller)
+    _LOG.debug("path_caller: " + str(path_caller))
     for root, dirs, files in os.walk(path_caller):
         rel_root = os.path.relpath(root, path_caller)
         for file in files:

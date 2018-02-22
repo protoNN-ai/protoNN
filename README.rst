@@ -41,6 +41,8 @@ Aleksandr Drozd
 
 Mohamed Wahib
 
+Mateusz Bysiek
+
 Maxim Shpakovich
 
 For licensing information, please see `<LICENSE>`_

@@ -54,6 +54,9 @@ def save_code(path):
     os.makedirs(path, exist_ok=True)
     path_caller = _get_caller_folder()
     _LOG.debug("path_caller: " + str(path_caller))
+    major, minor, _, _, _ = sys.version_info
+    if minor < 6:  # TODO: remove this when we drop py 3.4 support
+        path_caller = str(path_caller)
     for root, dirs, files in os.walk(path_caller):
         rel_root = os.path.relpath(root, path_caller)
         for file in files:

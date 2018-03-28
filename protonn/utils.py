@@ -64,4 +64,5 @@ def save_code(path):
                 os.makedirs(os.path.join(path, rel_root), exist_ok=True)
                 path_dest = os.path.join(path, rel_root, file)
                 shutil.copy2(os.path.join(root, file), path_dest)
-                print(os.path.join(root, file))    # current_file = os.path.realpath(__file__)
+                # print(os.path.join(root, file))
+                # current_file = os.path.realpath(__file__)

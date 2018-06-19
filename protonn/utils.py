@@ -52,7 +52,7 @@ def _get_caller_folder(stack_level: int = 1) -> pathlib.Path:
 
 def save_code(path):
     os.makedirs(path, exist_ok=True)
-    path_caller = _get_caller_folder()
+    path_caller = _get_caller_folder(2)
     _LOG.debug("path_caller: " + str(path_caller))
     major, minor, _, _, _ = sys.version_info
     if minor < 6:  # TODO: remove this when we drop py 3.4 support

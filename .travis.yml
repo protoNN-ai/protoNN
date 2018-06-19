@@ -2,7 +2,7 @@ language: python
 
 sudo: false
 
-dist: trusty
+dist: bionic
 
 python:
 - '3.5'
@@ -23,11 +23,11 @@ before_script: # configure a headless display to test plot generation
 - sleep 3 # give xvfb some time to start
 
 script:
-- python -m unittest discover
+# - python -m unittest discover
 - python -m coverage run --branch --source . -m unittest discover --verbose
 
 after_success:
-  - python -m pylint --load-plugins=pylint.extensions.mccabe --docstring-min-length 5 --no-docstring-rgx "^(test)?_|.*Tests$" --unsafe-load-any-extension y --output-format colorized  --reports y $(find . -name "*.py")
+  # - python -m pylint --load-plugins=pylint.extensions.mccabe --docstring-min-length 5 --no-docstring-rgx "^(test)?_|.*Tests$" --unsafe-load-any-extension y --output-format colorized  --reports y $(find . -name "*.py")
   - python -m coverage report --show-missing
   - coveralls
 

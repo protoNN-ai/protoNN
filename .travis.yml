@@ -23,7 +23,7 @@ before_script: # configure a headless display to test plot generation
 - sleep 3 # give xvfb some time to start
 
 script:
-- python -m unittest discover
+# - python -m unittest discover
 - python -m coverage run --branch --source . -m unittest discover --verbose
 
 after_success:

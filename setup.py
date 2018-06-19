@@ -20,7 +20,7 @@ class Package(setup_boilerplate.Package):
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3 :: Only',
-        'Topic :: Text Processing :: Linguistic']
+        'Topic :: Scientific/Engineering']
     keywords = ['machine learning', 'prototyping', 'neural network']
 
 

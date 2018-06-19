@@ -15,8 +15,8 @@ protoNN
 
 neural prototyping framework
 
-.. image:: https://api.travis-ci.org/undertherain/protoNN.svg?branch=master
-    :target: https://travis-ci.org/undertherain/protoNN
+.. image:: https://api.travis-ci.org/protoNN-ai/protoNN.svg?branch=master
+    :target: https://travis-ci.org/protoNN-ao/protoNN
     :alt: build status from Travis CI
 
 .. image:: https://coveralls.io/repos/github/undertherain/protoNN/badge.svg?branch=master

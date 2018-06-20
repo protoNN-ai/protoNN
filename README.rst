@@ -7,11 +7,7 @@
 
 .. image:: https://user-images.githubusercontent.com/1635907/34374872-bc004152-eb26-11e7-9e72-9f0234ff5658.png
    :alt: [protoNN logo]
-   :align: center
-
-=======
-protoNN
-=======
+   :align: left
 
 A framework for code-agnostic, interactive prototyping of DNNs.
 

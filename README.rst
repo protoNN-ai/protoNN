@@ -29,11 +29,11 @@ A framework for code-agnostic, interactive prototyping of DNNs.
 
 Features
 --------
- * Transparent and elastic scheduling of DNN training jobs on modern HPC systems.
- * Monitoring and visualizing model parameters and computational performance statistics.
- * Perform semi-automatic hyperparameter tuning/optimization and architecture search using evolutionary algorithms.
- * A user-defined interactive interface to drive the framework/ design process, not bound to any particular framework.
- * Scaling the functionality and performance of the model as the resources increase. 
+* Transparent and elastic scheduling of DNN training jobs on modern HPC systems.
+* Monitoring and visualizing model parameters and computational performance statistics.
+* Perform semi-automatic hyperparameter tuning/optimization and architecture search using evolutionary algorithms.
+* A user-defined interactive interface to drive the framework/ design process, not bound to any particular framework.
+* Scaling the functionality and performance of the model as the resources increase. 
 
 
 How do I get set up?

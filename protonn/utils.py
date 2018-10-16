@@ -50,12 +50,12 @@ def _get_caller_folder(stack_level: int = 1) -> pathlib.Path:
     return here
 
 
-def save_code(path):
+def save_code(path, stack_level: int = 1):
     os.makedirs(path, exist_ok=True)
-    path_caller = _get_caller_folder(2)
+    path_caller = _get_caller_folder(stack_level + 1)
     _LOG.debug("path_caller: " + str(path_caller))
-    major, minor, _, _, _ = sys.version_info
-    if minor < 6:  # TODO: remove this when we drop py 3.4 support
+    # major, minor, _, _, _ = 
+    if sys.version_info[:2] < (3, 6):  # TODO: remove this when we drop py 3.5 support
         path_caller = str(path_caller)
     for root, dirs, files in os.walk(path_caller):
         rel_root = os.path.relpath(root, path_caller)

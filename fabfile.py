@@ -11,7 +11,7 @@ def clean():
 
 
 def make():
-    local("python3.6 setup.py bdist_wheel")
+    local("python3 setup.py bdist_wheel")
 
 
 def deploy():
@@ -21,7 +21,7 @@ def deploy():
 
 
 def test():
-    local("python3.6 -m unittest discover")
+    local("python3 -m unittest discover")
 
 
 def docs():

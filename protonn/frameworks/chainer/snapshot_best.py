@@ -51,5 +51,5 @@ def _snapshot_best(trainer, target, filename, savefun):
     val_loss = trainer.observation['validation/main/loss']
     if val_loss < MIN_LOSS:
         MIN_LOSS = val_loss
-        snapshot_object(trainer, target, filename, savefun)
+        snapshot_object(target, filename, savefun)
 

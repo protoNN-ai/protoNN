@@ -5,7 +5,7 @@ import math
 
 from chainer.serializers import npz
 from chainer.training import extension
-from chainer.training.extensions._snapshot import _snapshot_object
+from chainer.training.extensions._snapshot import snapshot_object
 
 MIN_LOSS = math.inf
 
@@ -51,5 +51,5 @@ def _snapshot_best(trainer, target, filename, savefun):
     val_loss = trainer.observation['validation/main/loss']
     if val_loss < MIN_LOSS:
         MIN_LOSS = val_loss
-        _snapshot_object(trainer, target, filename, savefun)
+        snapshot_object(trainer, target, filename, savefun)
 

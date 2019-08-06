@@ -53,7 +53,7 @@ def main():
     for param_instance in product_dict(**params_ranges):
         params_result = params_original.copy()
         params_result.update(param_instance)
-        launch_with_parameters(params_result)
+        launch_with_parameters(params_result, target_dir)
 
 
 if __name__ == "__main__":

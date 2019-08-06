@@ -2,6 +2,7 @@ import itertools
 import subprocess
 import tempfile
 import yaml
+import sys
 import os
 
 
@@ -12,9 +13,8 @@ def product_dict(**kwargs):
         yield dict(zip(keys, instance))
 
 
-def launch_with_parameters(params):
+def launch_with_parameters(params, target_dir):
     print("launching with", params)
-    target_dir = "/home/blackbird/Projects_heavy/Scry/beholder"
     os.chdir(target_dir)
     name_file_target = 'accuracy_config.yml'
     with open(name_file_target, 'w') as outfile:
@@ -43,8 +43,9 @@ def load_yaml(path):
 
 def main():
     print("protonn optimizer")
+    target_dir = sys.argv[1]
     # load yml with all parameters
-    params_original = load_yaml("/home/blackbird/Projects_heavy/Scry/beholder/accuracy_config_base.yml")
+    params_original = load_yaml(os.path.join(target_dir, "accuracy_config_base.yml"))
     # TODO: define syntax for specifying ranges
     params_ranges = {}
     params_ranges["aligner_left_eye"] = [[x, x] for x in [0.30, 0.31]]

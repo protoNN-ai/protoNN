@@ -50,7 +50,7 @@ def main():
     # TODO: define syntax for specifying ranges
     params_ranges = {}
     # params_ranges["aligner_left_eye"] = [[x, x] for x in [0.30, 0.31]]
-    vals = np.arange(0.29, 0.32, 0.005)
+    vals = np.arange(0.28, 0.33, 0.005)
     params_ranges["aligner_left_eye"] = [[float(x), float(y)] for x, y in itertools.product(vals, vals)]
     params_ranges["detection_padding"] = [0.1]
     for param_instance in product_dict(**params_ranges):

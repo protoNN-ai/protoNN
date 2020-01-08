@@ -38,14 +38,12 @@ class PivotTable():
                  key_primary,
                  key_secondary,
                  keys_maximize=[],
-                 keys_average=[],
-                 keys_drop=[]):
+                 keys_average=[]):
         self.key_target = key_target
         self.key_primary = key_primary
         self.key_secondary = key_secondary
         self.keys_maximize = keys_maximize
         self.keys_average = keys_average
-        self.keys_drop = keys_drop
 
     def get_maxed(self, df):
         return df
@@ -54,33 +52,38 @@ class PivotTable():
         print("averaging")
         print(df)
         print("becomes")
-        g = df.groupby(self.groupby_items + self.keys_average)
-        r = g.mean()
-        #r = df.mean()
-        print(r)
+        idx_max = df[self.key_target].idxmax()
+        row_max = df.loc[idx_max]
+        for key in self.keys_maximize:
+            df = df[df[key] == row_max[key]]
+        print(df)
         print()
-        return r
+        return df
+#        g = df.groupby(self.groupby_items + self.keys_average)
+ #       r = g.mean()
+        #r = df.mean()
+  #      print(r)
+   #     print()
+    #    return r
 
     def pivot_dataframe(self, df):
-        # TODO: warn about unknown keys
         self.groupby_items = [self.key_secondary, self.key_primary]
         group = df.groupby(self.groupby_items)
-        r = group.apply(self.get_averaged)
-        return r
-        #group = df.groupby("device")
-        #means = group.agg({framew})
-        #means = group.agg({"device": "first"})
-        # for i in group:
-        #     print("g")
-        #     ip[]
-        #     print(type(i[1]))
-        #     print(i)
-        # print(group.aggregate("first"))
-        exit(1)
-        means.reset_index(inplace=True)
-        means = means.loc[:, groupby_items + [key_target]]
+        maxed = group.apply(self.get_averaged)
+        #maxed.drop(self.key_primary, axis="columns", inplace=True)
+        #maxed.drop(self.key_secondary, axis="columns", inplace=True)
+        for key in self.keys_maximize + self.keys_average:
+            maxed.drop(key, axis="columns", inplace=True)
+        maxed.reset_index(drop=True, inplace=True)
+        # TODO: warn about unknown keys
+#        return maxed
+        print("===========")
+        print(maxed)
+        maxed = maxed.loc[:, [self.key_primary, self.key_secondary, self.key_target]]
+        print("===========")
+        print(maxed)
         # TODO: aggregate according to strategy for each column individually 
-        unstacked = means.groupby(groupby_items)[key_target].aggregate('first').unstack()
+        unstacked = maxed.groupby([self.key_primary, self.key_secondary])[self.key_target].aggregate('mean').unstack()
         return unstacked
 
 

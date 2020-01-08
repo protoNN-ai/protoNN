@@ -33,12 +33,19 @@ def df_from_dir(path):
     return dframe
 
 
+def pivot_dataframe(df, key_target, key_primary, key_secondary):
+    groupby_items = [key_secondary, key_primary]
+    group = df.groupby(groupby_items)
+    means = group.mean()
+    means.reset_index(inplace=True)
+    means = means.loc[:, groupby_items + [key_target]]
+    # TODO: aggregate according to strategy for each column individually 
+    unstacked = means.groupby(groupby_items)[key_target].aggregate('first').unstack()
+    return unstacked
+
+
 def filter_by(df, filters):
     df_plot = df
     for key in filters:
         df_plot = df_plot[df_plot[key] == filters[key]]
     return df_plot
-
-
-df = df_from_dir(Path("/home/blackbird/Projects/Performance/log_debug"))
-print(df)

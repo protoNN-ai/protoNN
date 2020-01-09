@@ -45,9 +45,6 @@ class PivotTable():
         self.keys_maximize = keys_maximize
         self.keys_average = keys_average
 
-    def get_maxed(self, df):
-        return df
-
     def get_averaged(self, df):
         print("averaging")
         print(df)
@@ -59,24 +56,15 @@ class PivotTable():
         print(df)
         print()
         return df
-#        g = df.groupby(self.groupby_items + self.keys_average)
- #       r = g.mean()
-        #r = df.mean()
-  #      print(r)
-   #     print()
-    #    return r
 
     def pivot_dataframe(self, df):
         self.groupby_items = [self.key_secondary, self.key_primary]
         group = df.groupby(self.groupby_items)
         maxed = group.apply(self.get_averaged)
-        #maxed.drop(self.key_primary, axis="columns", inplace=True)
-        #maxed.drop(self.key_secondary, axis="columns", inplace=True)
         for key in self.keys_maximize + self.keys_average:
             maxed.drop(key, axis="columns", inplace=True)
         maxed.reset_index(drop=True, inplace=True)
         # TODO: warn about unknown keys
-#        return maxed
         print("===========")
         print(maxed)
         maxed = maxed.loc[:, [self.key_primary, self.key_secondary, self.key_target]]

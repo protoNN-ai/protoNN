@@ -1,3 +1,3 @@
-"""Version of contextfree package."""
+"""Version of protonn package."""
 
 VERSION = "0.1.5"

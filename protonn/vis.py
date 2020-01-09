@@ -82,9 +82,15 @@ class PivotTable():
         maxed = maxed.loc[:, [self.key_primary, self.key_secondary, self.key_target]]
         print("===========")
         print(maxed)
+        #return maxed
+        unstacked = maxed.groupby([self.key_primary, self.key_secondary])
+        df_mean = unstacked[self.key_target].aggregate('mean').unstack()
+        df_std = unstacked[self.key_target].aggregate('std').unstack()
+        #unstacked = unstacked.mean()
+        #unstacked.reset_index(inplace=True)
         # TODO: aggregate according to strategy for each column individually 
-        unstacked = maxed.groupby([self.key_primary, self.key_secondary])[self.key_target].aggregate('mean').unstack()
-        return unstacked
+        #unstacked = maxed.groupby([self.key_primary, self.key_secondary])[self.key_target].aggregate('mean').unstack()
+        return df_mean, df_std.fillna(0)
 
 
 def filter_by(df, filters):

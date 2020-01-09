@@ -17,7 +17,7 @@ def df_from_file(path):
     try:
         data = load_json(path)
     except Exception as e:
-        print(f"can't load {str(path)}")
+        logger.error(f"can't load {str(path)}")
         raise e
     dframe = json_normalize(data)
 
@@ -47,7 +47,7 @@ class PivotTable():
         self.keys_maximize = keys_maximize
         self.keys_average = keys_average
 
-    def get_averaged(self, df):
+    def get_maxed(self, df):
         idx_max = df[self.key_target].idxmax()
         row_max = df.loc[idx_max]
         for key in self.keys_maximize:
@@ -57,7 +57,7 @@ class PivotTable():
     def pivot_dataframe(self, df):
         self.groupby_items = [self.key_secondary, self.key_primary]
         group = df.groupby(self.groupby_items)
-        maxed = group.apply(self.get_averaged)
+        maxed = group.apply(self.get_maxed)
         for key in self.keys_maximize + self.keys_average:
             maxed.drop(key, axis="columns", inplace=True)
         maxed.reset_index(drop=True, inplace=True)

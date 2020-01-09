@@ -72,8 +72,10 @@ class PivotTable():
         return df_mean, df_std.fillna(0)
 
 
-def filter_by(df, filters):
+def filter_by(df, filters, drop=True):
     df_plot = df
     for key in filters:
         df_plot = df_plot[df_plot[key] == filters[key]]
+        if drop:
+            df_plot = df_plot.drop(key, axis="columns")
     return df_plot

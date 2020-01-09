@@ -1,6 +1,8 @@
 import pandas
 import json
+import logging
 from pandas.io.json import json_normalize
+logger = logging.getLogger(__name__)
 
 
 def load_json(path):
@@ -46,15 +48,10 @@ class PivotTable():
         self.keys_average = keys_average
 
     def get_averaged(self, df):
-        print("averaging")
-        print(df)
-        print("becomes")
         idx_max = df[self.key_target].idxmax()
         row_max = df.loc[idx_max]
         for key in self.keys_maximize:
             df = df[df[key] == row_max[key]]
-        print(df)
-        print()
         return df
 
     def pivot_dataframe(self, df):
@@ -64,20 +61,14 @@ class PivotTable():
         for key in self.keys_maximize + self.keys_average:
             maxed.drop(key, axis="columns", inplace=True)
         maxed.reset_index(drop=True, inplace=True)
-        # TODO: warn about unknown keys
-        print("===========")
-        print(maxed)
-        maxed = maxed.loc[:, [self.key_primary, self.key_secondary, self.key_target]]
-        print("===========")
-        print(maxed)
-        #return maxed
+        keys_allowed = [self.key_primary, self.key_secondary, self.key_target]
+        for key in maxed.columns:
+            if key not in keys_allowed:
+                logger.warning(f"key {key} is not known")
+        maxed = maxed.loc[:, keys_allowed]
         unstacked = maxed.groupby([self.key_primary, self.key_secondary])
         df_mean = unstacked[self.key_target].aggregate('mean').unstack()
         df_std = unstacked[self.key_target].aggregate('std').unstack()
-        #unstacked = unstacked.mean()
-        #unstacked.reset_index(inplace=True)
-        # TODO: aggregate according to strategy for each column individually 
-        #unstacked = maxed.groupby([self.key_primary, self.key_secondary])[self.key_target].aggregate('mean').unstack()
         return df_mean, df_std.fillna(0)
 
 

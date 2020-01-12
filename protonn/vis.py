@@ -64,7 +64,11 @@ class PivotTable():
         keys_allowed = [self.key_primary, self.key_secondary, self.key_target]
         for key in maxed.columns:
             if key not in keys_allowed:
-                logger.warning(f"key {key} is not known")
+                try:
+                    if len(maxed[key].unique()) > 1:
+                        logger.warning(f"unmanaged col {key} is not unique!")
+                except:
+                    logger.warning(f"can't check if key {key} is unuque")
         maxed = maxed.loc[:, keys_allowed]
         unstacked = maxed.groupby([self.key_primary, self.key_secondary])
         df_mean = unstacked[self.key_target].aggregate('mean').unstack()

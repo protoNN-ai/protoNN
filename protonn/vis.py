@@ -55,13 +55,16 @@ class PivotTable():
         return df
 
     def pivot_dataframe(self, df):
-        self.groupby_items = [self.key_secondary, self.key_primary]
+        if self.key_secondary is not None:
+            self.groupby_items = [self.key_secondary, self.key_primary]
+        else:
+            self.groupby_items = [self.key_primary]
         group = df.groupby(self.groupby_items)
         maxed = group.apply(self.get_maxed)
         for key in self.keys_maximize + self.keys_average:
             maxed.drop(key, axis="columns", inplace=True)
         maxed.reset_index(drop=True, inplace=True)
-        keys_allowed = [self.key_primary, self.key_secondary, self.key_target]
+        keys_allowed = self.groupby_items + [self.key_target]
         for key in maxed.columns:
             if key not in keys_allowed:
                 try:
@@ -70,10 +73,15 @@ class PivotTable():
                 except:
                     logger.warning(f"can't check if key {key} is unuque")
         maxed = maxed.loc[:, keys_allowed]
-        unstacked = maxed.groupby([self.key_primary, self.key_secondary])
-        df_mean = unstacked[self.key_target].aggregate('mean').unstack()
-        df_std = unstacked[self.key_target].aggregate('std').unstack()
-        return df_mean, df_std.fillna(0)
+        unstacked = maxed.groupby(self.groupby_items)
+        df_mean = unstacked[self.key_target].aggregate('mean')
+        df_max = unstacked[self.key_target].aggregate('max')
+        df_std = unstacked[self.key_target].aggregate('std')
+        if df_mean.index.nlevels > 1:
+            df_mean = df_mean.unstack()
+            df_max = df_max.unstack()
+            df_std = df_std.unstack()
+        return df_mean, df_max, df_std.fillna(0)
 
 
 def filter_by(df, filters, drop=True):

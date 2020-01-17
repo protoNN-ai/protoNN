@@ -27,6 +27,14 @@ def save_data_json(data, name_file):
     f.close()
 
 
+def load_json(path):
+    f = open(path)
+    s_data = f.read()
+    data = json.loads(s_data)
+    f.close()
+    return data
+
+
 # def _detect_local_imports():
 #    r = re.compile('\nimport \w+|from \w+')
 #    with open(sys.argv[0]) as f:

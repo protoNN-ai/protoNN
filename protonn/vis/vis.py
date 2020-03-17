@@ -3,7 +3,7 @@ import json
 import logging
 from pandas.io.json import json_normalize
 logger = logging.getLogger(__name__)
-from .utils import load_json
+from ..utils import load_json
 
 
 def df_from_file(path):

@@ -29,7 +29,7 @@ def schedule_job(command, job_name="job_name"):
         f.write(" ".join(map(str, command)))
         f.write("\n")
         f.write("path_scrypt=$(pwd)/$0\n")
-        f.write("\nrm $path_scrypt\n")
+        f.write("rm $path_scrypt\n")
         f.write("\n")
 
     os.chmod(path_script, 0o766)

@@ -1,6 +1,11 @@
 import os
 import subprocess
 import uuid
+from protonn.config import load_config
+
+
+# TODO: get job scheduler parameters from config
+# group_name = "gcb50300"
 
 
 def run_locally(command):
@@ -8,7 +13,10 @@ def run_locally(command):
     proc.communicate()
 
 
+# TODO: allow override some of default parameters like group name
 def schedule_job(command, job_name="job_name", cnt_nodes=1):
+    config = load_config()
+    group_name = config.qsub.group
     path_home = os.path.expanduser("~")
     path_scripts = os.path.join(path_home, ".local/protonn/scripts")
     os.makedirs(path_scripts, exist_ok=True)
@@ -16,7 +24,7 @@ def schedule_job(command, job_name="job_name", cnt_nodes=1):
     unique_name = uuid.uuid4().hex + ".sh"
     path_script = os.path.join(path_scripts, unique_name)
     # TODO: get this params from some options
-    # TODO: optinally wrapp into MPI call depending on configuration 
+    # TODO: optionally wrap into MPI call depending on configuration
     with open(path_script, "w") as f:
         f.write("#!/bin/bash\n")
         f.write("#$ -cwd\n")
@@ -37,6 +45,6 @@ def schedule_job(command, job_name="job_name", cnt_nodes=1):
     # TODO: get group name from config
     cmd_schedule = ["qsub",
                     "-g",
-                    "gaa50035",
+                    group_name,
                     path_script]
     run_locally(cmd_schedule)

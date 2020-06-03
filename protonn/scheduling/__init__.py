@@ -8,18 +8,19 @@ def run_locally(command):
     proc.communicate()
 
 
-def schedule_job(command, job_name="job_name"):
+def schedule_job(command, job_name="job_name", cnt_nodes=1):
     path_home = os.path.expanduser("~")
     path_scripts = os.path.join(path_home, ".local/protonn/scripts")
     os.makedirs(path_scripts, exist_ok=True)
     # TODO: use project name + timestamp + short random str
     unique_name = uuid.uuid4().hex + ".sh"
     path_script = os.path.join(path_scripts, unique_name)
-    # get this params from some options
+    # TODO: get this params from some options
+    # TODO: optinally wrapp into MPI call depending on configuration 
     with open(path_script, "w") as f:
         f.write("#!/bin/bash\n")
         f.write("#$ -cwd\n")
-        f.write("#$ -l rt_F=1\n")
+        f.write(f"#$ -l rt_F={cnt_nodes}\n")
         f.write("#$ -l h_rt=4:00:00\n")
         f.write(f"#$ -N {job_name}\n")
         f.write("#$ -j y\n")
@@ -33,4 +34,9 @@ def schedule_job(command, job_name="job_name"):
         f.write("\n")
 
     os.chmod(path_script, 0o766)
-    # run job scheduler
+    # TODO: get group name from config
+    cmd_schedule = ["qsub",
+                    "-g",
+                    "gaa50035",
+                    path_script]
+    run_locally(cmd_schedule)

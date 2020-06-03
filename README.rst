@@ -37,7 +37,7 @@ How do I get set up?
 
 * ``pip3 install protonn`` for latest stable release
 * ``pip3 install git+https://github.com/undertherain/protoNN.git`` for recent development version
-* Python 3.4 or later is required
+* Python 3.6 or later is required
 
 
 Contributors

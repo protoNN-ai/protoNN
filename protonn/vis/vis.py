@@ -1,7 +1,7 @@
 import pandas
 import json
 import logging
-from pandas.io.json import json_normalize
+from pandas import json_normalize
 logger = logging.getLogger(__name__)
 from ..utils import load_json
 
@@ -30,13 +30,11 @@ def df_from_dir(path):
 class PivotTable():
     def __init__(self,
                  key_target,
-                 key_primary,
-                 key_secondary,
+                 keys_argument=[],
                  keys_maximize=[],
                  keys_average=[]):
         self.key_target = key_target
-        self.key_primary = key_primary
-        self.key_secondary = key_secondary
+        self.keys_argument = keys_argument
         self.keys_maximize = keys_maximize
         self.keys_average = keys_average
 
@@ -48,10 +46,7 @@ class PivotTable():
         return df
 
     def pivot_dataframe(self, df):
-        if self.key_secondary is not None:
-            self.groupby_items = [self.key_secondary, self.key_primary]
-        else:
-            self.groupby_items = [self.key_primary]
+        self.groupby_items = self.keys_argument
         group = df.groupby(self.groupby_items)
         maxed = group.apply(self.get_maxed)
         for key in self.keys_maximize + self.keys_average:

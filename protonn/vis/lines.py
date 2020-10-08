@@ -14,8 +14,7 @@ def plot_lines(df, key_target, key_first, key_second, key_third):
         # print("plotting ", device)
         df_filtered = filter_by(df, {key_second: value_second})
         pt = PivotTable(key_target=key_target,
-                        key_primary=key_third,
-                        key_secondary=key_first,
+                        keys_argument=[key_first, key_third],
                         keys_average=[])
         df_mean, df_max, df_std = pt.pivot_dataframe(df_filtered)
         # print(df_mean)

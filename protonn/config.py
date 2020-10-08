@@ -1,4 +1,4 @@
-"""Configuration support for vecto
+"""Configuration support for protonn
 
 Config files are expected to be found in the .vecto folder in user's home.
 The format is the same as jupyter notebooks

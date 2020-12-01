@@ -22,7 +22,7 @@ def describe_var(var):
         result += f" len={len(var)}"
     if isinstance(var, tuple) or isinstance(var, list):
         result += "\n"
-        for child in var:
+        for child in var[:5]:
             descr_child = describe_var(child)
             for line in descr_child.split("\n"):
                 if len(line) > 1:

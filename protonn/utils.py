@@ -3,13 +3,40 @@ import os
 import sys
 import shutil
 import json
-import re
+# import re
 import inspect
 import pathlib
 import logging
 
 
 _LOG = logging.getLogger(__name__)
+
+
+def describe_var(var):
+    # print("called on", var)
+    result = ""
+    result = f"{type(var).__name__}"
+    if hasattr(var, 'shape'):
+        result += f" shape={var.shape}"
+    elif hasattr(var, '__len__'):
+        result += f" len={len(var)}"
+    if isinstance(var, tuple) or isinstance(var, list):
+        result += "\n"
+        for child in var:
+            descr_child = describe_var(child)
+            for line in descr_child.split("\n"):
+                if len(line) > 1:
+                    result += "  " + line + "\n"
+    if isinstance(var, dict):
+        result += "\n"
+        for key in var:
+            descr_child = describe_var(var[key])
+            lines = descr_child.strip().split("\n")
+            result += f"  {key}:""\n"
+            for line in lines:
+                result += f"    " + line + "\n"
+
+    return result
 
 
 def get_time_str():

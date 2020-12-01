@@ -30,4 +30,4 @@ def plot_lines(df, key_target, key_first, key_second, key_third):
     #plt.xticks(x_ticks[8:], rotation=90)
     # TODO: make this customi
     plt.xlabel(key_first)
-    plt.legend()
+    # plt.legend()

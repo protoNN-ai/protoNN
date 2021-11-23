@@ -1,13 +1,12 @@
 import datetime
-import os
-import sys
-import shutil
-import json
 # import re
 import inspect
-import pathlib
+import json
 import logging
-
+import os
+import pathlib
+import shutil
+import sys
 
 _LOG = logging.getLogger(__name__)
 
@@ -101,3 +100,11 @@ def save_code(path, stack_level: int = 1):
                 shutil.copy2(os.path.join(root, file), path_dest)
                 # print(os.path.join(root, file))
                 # current_file = os.path.realpath(__file__)
+
+
+# TODO: implement this properly
+def num_to_str_with_suffix(num):
+    if num >= 1000000:
+        return f"{num // 1000000}M"
+    else:
+        return f"{num // 1000}K"

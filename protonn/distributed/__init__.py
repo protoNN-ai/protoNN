@@ -5,10 +5,13 @@ class DistAdapter:
     _adapter = None
 
     def init(self, backend) -> None:
-        if backend == "hvd":
+        if backend == "horovod":
             from . import horovod_adapter
 
             self._adapter = horovod_adapter
+        else:
+            raise ValueError("Unknown backend")
+        self.backend = backend
         self._adapter.init()
 
     def rank(self) -> int:

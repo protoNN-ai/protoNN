@@ -23,5 +23,8 @@ class DistAdapter:
     def allreduce(self, tensor: torch.Tensor) -> torch.Tensor:
         return self._adapter.allreduce(tensor)
 
+    def get_backend_as_pl_strategy(self):
+        return self.backend
+
 
 dist_adapter = DistAdapter()

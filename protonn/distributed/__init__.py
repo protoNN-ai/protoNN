@@ -1,8 +1,12 @@
+from typing import Optional
+
 import torch
 
 
 class DistAdapter:
     _adapter = None
+
+    SUM = 0
 
     def init(self, backend) -> None:
         if backend == "horovod":
@@ -20,13 +24,13 @@ class DistAdapter:
     def world_size(self) -> int:
         return self._adapter.world_size()
 
-    def allreduce(self, tensor: torch.Tensor) -> torch.Tensor:
-        return self._adapter.allreduce(tensor)
+    def allreduce(self, tensor: torch.Tensor, op: Optional[int] = None) -> torch.Tensor:
+        return self._adapter.allreduce(tensor, op)
 
     def get_backend_as_pl_strategy(self):
         return self.backend
 
-    def broadcast(self, tensor: torch.Tensor, src_rank: Optional(int)) -> torch.Tensor:
+    def broadcast(self, tensor: torch.Tensor, src_rank: int) -> torch.Tensor:
         return self._adapter.broadcast(tensor, src_rank)
 
 

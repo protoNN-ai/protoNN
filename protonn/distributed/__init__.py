@@ -26,5 +26,8 @@ class DistAdapter:
     def get_backend_as_pl_strategy(self):
         return self.backend
 
+    def broadcast(self, tensor: torch.Tensor, src_rank: Optional(int)) -> torch.Tensor:
+        return self._adapter.broadcast(tensor, src_rank)
+
 
 dist_adapter = DistAdapter()

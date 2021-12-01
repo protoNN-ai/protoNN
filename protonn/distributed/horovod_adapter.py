@@ -16,3 +16,7 @@ def world_size() -> int:
 
 def allreduce(tensor: torch.Tensor) -> torch.Tensor:
     return hvd.allreduce(tensor)
+
+
+def broadcast(tensor: torch.Tensor, src_rank: int) -> torch.Tensor:
+    return hvd.broadcast(tensor, src_rank)

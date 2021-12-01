@@ -104,7 +104,8 @@ def save_code(path, stack_level: int = 1):
 
 # TODO: implement this properly
 def num_to_str_with_suffix(num):
-    if num >= 1000000:
-        return f"{num // 1000000}M"
-    else:
-        return f"{num // 1000}K"
+    magnitude = 0
+    while abs(num) >= 1000:
+        magnitude += 1
+        num /= 1000
+    return '%d%s' % (num, ['', 'K', 'M', 'G', 'T', 'P'][magnitude])

@@ -12,7 +12,7 @@ def init() -> None:
     elif (
         torch.cuda.is_available()
         and dist.is_nccl_available()
-        and torch.cuda.device_cound() > 0
+        and torch.cuda.device_count() > 0
     ):
         backend = "nccl"
     elif dist.is_gloo_available():

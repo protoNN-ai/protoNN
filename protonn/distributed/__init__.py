@@ -13,8 +13,15 @@ class DistAdapter:
             from . import horovod_adapter
 
             self._adapter = horovod_adapter
+
+        elif backend in ["dp", "ddp", "ddp2", "ddp_spawn"]:
+            from . import torch_distributed_adapter
+
+            self._adapter = torch_distributed_adapter
+
         else:
             raise ValueError("Unknown backend")
+
         self.backend = backend
         self._adapter.init()
 

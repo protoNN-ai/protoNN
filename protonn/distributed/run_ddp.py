@@ -1,5 +1,6 @@
 import os
 import socket
+import sys
 
 from mpi4py import MPI
 
@@ -24,16 +25,18 @@ def main():
     size = comm.Get_size()
     print("starting ddp")
 
-    if rank != 0:
-        os.environ["MASTER_PORT"] = "31415"
-    else:
-        # TODO: check if port is availalbe
-        pass
+    os.environ["MASTER_PORT"] = "31415"
     os.environ["WORLD_SIZE"] = str(size)
     os.environ["NODE_RANK"] = str(rank)
     master_addr = get_address()
-    # cMASTER_ADDR - required (except for NODE_RANK 0); address of NODE_RANK 0 node
-    print(master_addr)
+    master_addr = comm.bcast(master_addr, root=0)
+    if rank != 0:
+        os.environ["MASTER_ADDR"] = master_addr
+    else:
+        # TODO: check if port is availalbe
+        pass
+
+    os.system(" ".join(sys.argv[1:]))
 
 
 if __name__ == "__main__":

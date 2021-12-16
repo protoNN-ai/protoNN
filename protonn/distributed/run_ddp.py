@@ -28,6 +28,7 @@ def main():
     os.environ["MASTER_PORT"] = "31415"
     os.environ["WORLD_SIZE"] = str(size)
     os.environ["NODE_RANK"] = str(rank)
+    # PL_TORCH_DISTRIBUTED_BACKEND=gloo
     master_addr = get_address()
     master_addr = comm.bcast(master_addr, root=0)
     if rank != 0:

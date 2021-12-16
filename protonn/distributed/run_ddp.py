@@ -26,8 +26,8 @@ def main():
     print("starting ddp")
 
     os.environ["MASTER_PORT"] = "31415"
-    os.environ["WORLD_SIZE"] = str(size)
     os.environ["NODE_RANK"] = str(rank)
+    os.environ["CNT_NODES"] = str(size)
     # PL_TORCH_DISTRIBUTED_BACKEND=gloo
     master_addr = get_address()
     master_addr = comm.bcast(master_addr, root=0)

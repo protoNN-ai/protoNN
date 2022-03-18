@@ -26,16 +26,16 @@ def main():
     print("starting ddp")
 
     os.environ["MASTER_PORT"] = "31415"
-    os.environ["NODE_RANK"] = str(rank)
-    os.environ["CNT_NODES"] = str(size)
+    os.environ["RANK"] = str(rank)
+    os.environ["WORLD_SIZE"] = str(size)
     # PL_TORCH_DISTRIBUTED_BACKEND=gloo
     master_addr = get_address()
     master_addr = comm.bcast(master_addr, root=0)
-    if rank != 0:
-        os.environ["MASTER_ADDR"] = master_addr
-    else:
+#    if rank != 0:
+    os.environ["MASTER_ADDR"] = master_addr
+#    else:
         # TODO: check if port is availalbe
-        pass
+#        pass
 
     os.system(" ".join(sys.argv[1:]))
 

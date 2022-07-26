@@ -107,5 +107,6 @@ class BaseConfig(dict):
 
     def set_defaults(self):
         self.defaults = dict()
-        self["seed"] = 0
+        self.defaults["seed"] = 0
+        self.defaults["create_unique_path"] = True
         self.required_options = set()

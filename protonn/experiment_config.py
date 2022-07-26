@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 
 import yaml
+from protonn.utils import get_time_str
 
 
 def parse_float(dic, key):
@@ -31,7 +32,7 @@ def load_yaml_config(path_config):
 
 
 class BaseConfig(dict):
-    def __init__(self, cluster_env, param_path=None):
+    def __init__(self, name_task, cluster_env, param_path=None):
         if len(sys.argv) < 2 and param_path is None:
             print("run main.py config.yaml")
             print("or")
@@ -43,7 +44,7 @@ class BaseConfig(dict):
             path = Path(param_path)
         self.set_defaults()
         self._is_master = cluster_env.global_rank() == 0
-        self.read_from_yaml_and_set_default(path)
+        self.read_from_yaml_and_set_default(path, name_task)
         self.add_distributed_info(cluster_env.world_size())
         self.maybe_create_unique_path()
         cluster_env.barrier()
@@ -64,7 +65,9 @@ class BaseConfig(dict):
                 path_wandb = Path(self["path_results"]) / "wandb"
                 path_wandb.mkdir(parents=True, exist_ok=True)
 
-    def read_from_yaml_and_set_default(self, path):
+    def read_from_yaml_and_set_default(self, path, name_project):
+        self["name_project"] = name_project
+        self["timestamp"] = get_time_str()
         _logger = logging.getLogger(__name__)
         user_config = load_yaml_config(path)
         for key, value in user_config.items():

@@ -37,6 +37,7 @@ def load_yaml_config(path_config):
 class BaseConfig(dict):
     def __init__(self, name_task, cluster_env, param_path=None):
         self["name_task"] = name_task
+        self["cnt_gpus_per_node"] = int(os.environ["NUM_GPUS_PER_NODE"])
         if len(sys.argv) < 2 and param_path is None:
             print("run main.py config.yaml")
             print("or")

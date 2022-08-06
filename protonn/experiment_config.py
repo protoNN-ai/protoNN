@@ -38,10 +38,10 @@ class BaseConfig(dict):
     def __init__(self, name_task, cluster_env, param_path=None):
         self["name_task"] = name_task
         if int(os.environ["NUM_GPUS_PER_NODE"]) > 0:
-            self["cnt_gpus_per_node"] = -1
+            self["devices"] = -1
             self["accelerator"] = "gpu"
         else:
-            self["cnt_gpus_per_node"] = 0
+            self["devices"] = 1
             self["accelerator"] = "cpu"
         if len(sys.argv) < 2 and param_path is None:
             print("run main.py config.yaml")

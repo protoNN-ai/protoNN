@@ -42,6 +42,7 @@ class BaseConfig(dict):
             self["accelerator"] = "gpu"
         else:
             self["cnt_gpus_per_node"] = 0
+            self["accelerator"] = "cpu"
         if len(sys.argv) < 2 and param_path is None:
             print("run main.py config.yaml")
             print("or")

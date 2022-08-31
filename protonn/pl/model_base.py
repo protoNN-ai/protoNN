@@ -15,7 +15,7 @@ class BaseModel(pl.LightningModule):
 
     def configure_optimizers(self):
         # param_optimizer = list(self.net.named_parameters())
-        param_optimizer = [param for param in self.net.named_parameters() if param[1].requires_grad]
+        param_optimizer = [param for param in self.named_parameters() if param[1].requires_grad]
 
         no_decay = ["bias", "gamma", "beta", "LayerNorm", "layer_norm"]
 

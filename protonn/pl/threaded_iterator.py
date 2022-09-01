@@ -1,5 +1,8 @@
+import signal
 from queue import Queue
 from threading import Thread
+
+import _thread
 
 
 class ThreadedIterator:
@@ -25,6 +28,10 @@ class ThreadedIterator:
         return batch
 
     def thread(self):
-        for batch in self.read_next_batch():
-            self._queue.put(batch)
-        self._queue.put(None)
+        try:
+            for batch in self.yield_next_batch():
+                self._queue.put(batch)
+            self._queue.put(None)
+        except Exception as e:
+            print(e)
+            _thread.interrupt_main()

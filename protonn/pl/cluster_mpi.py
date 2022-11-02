@@ -1,10 +1,37 @@
 import os
 import socket
+import sys
 
 # torch import is not used but should be here for mpi4py to precced mpi init from mpi4py
-import torch
+import torch  # noqa # pylint: disable=unused-import
 from mpi4py import MPI
 from pytorch_lightning.plugins.environments import ClusterEnvironment
+
+
+# Global error handler
+def global_except_hook(exctype, value, traceback):
+    import sys
+    try:
+        import mpi4py.MPI
+        sys.stderr.write("\n*****************************************************\n")
+        sys.stderr.write("Uncaught exception was detected on rank {}. \n".format(
+            mpi4py.MPI.COMM_WORLD.Get_rank()))
+        from traceback import print_exception
+        print_exception(exctype, value, traceback)
+        sys.stderr.write("*****************************************************\n\n\n")
+        sys.stderr.write("\n")
+        sys.stderr.write("Calling MPI_Abort() to shut down MPI processes...\n")
+        sys.stderr.flush()
+    finally:
+        try:
+            import mpi4py.MPI
+            mpi4py.MPI.COMM_WORLD.Abort(1)
+        except Exception as e:
+            sys.stderr.write("*****************************************************\n")
+            sys.stderr.write("Sorry, we failed to stop MPI, this process will hang.\n")
+            sys.stderr.write("*****************************************************\n")
+            sys.stderr.flush()
+            raise e
 
 
 def get_address():
@@ -26,6 +53,8 @@ def get_address():
 
 class MPIClusterEnvironment(ClusterEnvironment):
     def __init__(self, **kwargs):
+
+        sys.excepthook = global_except_hook
         self.comm = MPI.COMM_WORLD
         # TODO: automate this
         self.ranks_per_node = int(os.environ["NUM_GPUS_PER_NODE"])

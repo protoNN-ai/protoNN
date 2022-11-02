@@ -12,7 +12,7 @@ def get_trainer(cluster_env, params):
     trainer = pl.Trainer(
         plugins=[cluster_env],
         default_root_dir=params["path_results"],
-        gpus=params["devices"],
+        devices=params["devices"],
         accelerator=params["accelerator"],
         num_nodes=cluster_env.cnt_nodes(),
         num_sanity_val_steps=10,

@@ -63,7 +63,7 @@ class MPIClusterEnvironment(ClusterEnvironment):
         self.ranks_per_node = int(os.environ["NUM_GPUS_PER_NODE"])
         if self.ranks_per_node == 0:
             self.ranks_per_node = 1
-        master_addr = get_address() if distributed_backend != "MPI" else ""
+        master_addr = get_address() if self.distributed_backend != "MPI" else ""
         self.master_addr = self.comm.bcast(master_addr, root=0)
         os.environ["RANK"] = str(self.comm.Get_rank())
 

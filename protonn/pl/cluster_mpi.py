@@ -11,12 +11,18 @@ from pytorch_lightning.plugins.environments import ClusterEnvironment
 # Global error handler
 def global_except_hook(exctype, value, traceback):
     import sys
+
     try:
         import mpi4py.MPI
+
         sys.stderr.write("\n*****************************************************\n")
-        sys.stderr.write("Uncaught exception was detected on rank {}. \n".format(
-            mpi4py.MPI.COMM_WORLD.Get_rank()))
+        sys.stderr.write(
+            "Uncaught exception was detected on rank {}. \n".format(
+                mpi4py.MPI.COMM_WORLD.Get_rank()
+            )
+        )
         from traceback import print_exception
+
         print_exception(exctype, value, traceback)
         sys.stderr.write("*****************************************************\n\n\n")
         sys.stderr.write("\n")
@@ -25,6 +31,7 @@ def global_except_hook(exctype, value, traceback):
     finally:
         try:
             import mpi4py.MPI
+
             mpi4py.MPI.COMM_WORLD.Abort(1)
         except Exception as e:
             sys.stderr.write("*****************************************************\n")
@@ -35,10 +42,6 @@ def global_except_hook(exctype, value, traceback):
 
 
 def get_address():
-
-    if os.environ["PL_TORCH_DISTRIBUTED_BACKEND"] == "MPI":
-        return ""
-
     st = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
         st.connect(("10.255.255.255", 1))
@@ -52,7 +55,7 @@ def get_address():
 
 
 class MPIClusterEnvironment(ClusterEnvironment):
-    def __init__(self, **kwargs):
+    def __init__(self, distributed_backend, **kwargs):
 
         sys.excepthook = global_except_hook
         self.comm = MPI.COMM_WORLD
@@ -60,7 +63,7 @@ class MPIClusterEnvironment(ClusterEnvironment):
         self.ranks_per_node = int(os.environ["NUM_GPUS_PER_NODE"])
         if self.ranks_per_node == 0:
             self.ranks_per_node = 1
-        master_addr = get_address()
+        master_addr = get_address() if distributed_backend != "MPI" else ""
         self.master_addr = self.comm.bcast(master_addr, root=0)
         os.environ["RANK"] = str(self.comm.Get_rank())
 

@@ -55,7 +55,7 @@ def get_address():
 
 
 class MPIClusterEnvironment(ClusterEnvironment):
-    def __init__(self, distributed_backend, **kwargs):
+    def __init__(self, **kwargs):
 
         sys.excepthook = global_except_hook
         self.comm = MPI.COMM_WORLD

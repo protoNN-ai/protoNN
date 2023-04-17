@@ -63,10 +63,10 @@ class BaseConfig(dict):
     def get_run_folder(self):
         timestamp = self["timestamp"][:-3]
         hostname = platform.node().split(".")[0]
-        bs = self["batch_size_effective"]
+        workers = self["cnt_workers"]
         lr = self["max_lr"] * self["cnt_workers"]
         seed = self["seed"]
-        run_folder = f"{timestamp}_bs{bs}_lr{lr:.4f}_s{seed}_{hostname}"
+        run_folder = f"{timestamp}_w{workers}_lr{lr:.4f}_s{seed}_{hostname}"
         # TODO: make this trully unique
         return run_folder
 
@@ -107,10 +107,11 @@ class BaseConfig(dict):
         self.update(user_config)
 
     def add_distributed_info(self, cnt_workers):
-        batch_size = self["batch_size"]
-        acc_batches = self["accumulate_batches"]
         self["cnt_workers"] = cnt_workers
-        self["batch_size_effective"] = batch_size * cnt_workers * acc_batches
+        # TODO: we remove this because accumulate batches is now dynamic
+        # batch_size = self["batch_size"]
+        # acc_batches = self["accumulate_batches"]
+        # self["batch_size_effective"] = batch_size * cnt_workers * acc_batches
 
     def set_defaults(self):
         self.defaults = dict()

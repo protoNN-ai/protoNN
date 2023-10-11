@@ -5,9 +5,10 @@ import sys
 from pathlib import Path
 
 import yaml
-from protonn.utils import get_time_str
 # this should be reimplemented in protonn
 from transformers import set_seed
+
+from protonn.utils import get_time_str
 
 
 def parse_float(dic, key):
@@ -86,7 +87,7 @@ class BaseConfig(dict):
         else:
             # TODO: chech if the folder is empty
             pass
-        if "WANDB_MODE" in os.environ and os.environ["WANDB_MODE"].lower() != "disabled":
+        if "WANDB_MODE" not in os.environ or os.environ["WANDB_MODE"].lower() != "disabled":
             if self._is_master:
                 path_wandb = Path(self["path_results"]) / "wandb"
                 path_wandb.mkdir(parents=True, exist_ok=True)

@@ -64,6 +64,7 @@ class BaseConfig(dict):
         timestamp = self["timestamp"][:-3]
         hostname = platform.node().split(".")[0]
         workers = self["cnt_workers"]
+        # TODO: this might be dynamic
         lr = self["max_lr"] * self["cnt_workers"]
         seed = self["seed"]
         run_folder = f"{timestamp}_w{workers}_lr{lr:.4f}_s{seed}_{hostname}"
@@ -73,6 +74,10 @@ class BaseConfig(dict):
     def maybe_create_unique_path(self):
         if self["create_unique_path"]:
             self["path_results"] = os.path.join(self["path_results"], self["name_project"])
+            # TODO: it's hacky, but for the time being for langmo
+            # ideally should be a list of names to concat into path
+            if "model_name" in self:
+                self["path_results"] = os.path.join(self["path_results"], self["model_name"])
             # TODO: extract nicemodel name from metadata
             # model_name = self["model_name"].split("/")[-1]
             # self["path_results"] = os.path.join(self["path_results"], model_name)
@@ -86,6 +91,7 @@ class BaseConfig(dict):
                 path_wandb = Path(self["path_results"]) / "wandb"
                 path_wandb.mkdir(parents=True, exist_ok=True)
 
+    # TODO: we have near identical method in langmo
     def read_from_yaml_and_set_default(self, path, name_project):
         self["name_project"] = name_project
         self["timestamp"] = get_time_str()

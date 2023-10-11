@@ -4,8 +4,9 @@ import sys
 
 # torch import is not used but should be here for mpi4py to precced mpi init from mpi4py
 import torch  # noqa # pylint: disable=unused-import
-from mpi4py import MPI
 from lightning.pytorch.plugins.environments import ClusterEnvironment
+from mpi4py import MPI
+
 
 # Global error handler
 def global_except_hook(exctype, value, traceback):

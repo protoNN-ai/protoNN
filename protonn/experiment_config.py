@@ -5,8 +5,6 @@ import sys
 from pathlib import Path
 
 import yaml
-# this should be reimplemented in protonn
-from transformers import set_seed
 
 from protonn.utils import get_time_str
 
@@ -58,7 +56,8 @@ class BaseConfig(dict):
         self.read_from_yaml_and_set_default(path, name_task)
         self.add_distributed_info(cluster_env.world_size())
         self.maybe_create_unique_path()
-        set_seed(self["seed"])
+        # TODO(vatai): create base trainer
+        print("WARRNING: seed not set.  This will be implemented in trainer.base class")
         cluster_env.barrier()
 
     def get_run_folder(self):

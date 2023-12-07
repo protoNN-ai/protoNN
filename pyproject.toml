@@ -1,0 +1,11 @@
+[project]
+name = "protonn"
+dynamic = ["dependencies", "version"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+version = {attr = "protonn.__version__"}
+
+[tool.setuptools.packages.find]
+where = ["./"]
+

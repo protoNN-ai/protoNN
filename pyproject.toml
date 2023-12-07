@@ -1,15 +1,10 @@
 [project]
 name = "protonn"
 version = "0.1.4"
-dependencies = [
-    "bs4",
-    "cairocffi",
-    "lark-parser",
-    "numpy",
-    "ipython",
-    "opencv-python",
-    "sympy",
-]
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
 
 [tool.setuptools.packages.find]
 where = ["./"]

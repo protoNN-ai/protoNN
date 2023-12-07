@@ -1,10 +1,10 @@
 [project]
 name = "protonn"
-version = "0.1.4"
-dynamic = ["dependencies"]
+dynamic = ["dependencies", "version"]
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
+version = {attr = "protonn.__version__"}
 
 [tool.setuptools.packages.find]
 where = ["./"]

@@ -1,0 +1,16 @@
+[project]
+name = "protonn"
+version = "0.1.4"
+dependencies = [
+    "bs4",
+    "cairocffi",
+    "lark-parser",
+    "numpy",
+    "ipython",
+    "opencv-python",
+    "sympy",
+]
+
+[tool.setuptools.packages.find]
+where = ["./"]
+

@@ -5,7 +5,6 @@ import sys
 from pathlib import Path
 
 import yaml
-
 from protonn.utils import get_time_str
 
 
@@ -34,7 +33,8 @@ def load_yaml_config(path_config):
 
 
 class BaseConfig(dict):
-    def __init__(self, name_task, param_path=None):
+    def __init__(self, name_task, param_path=None, is_master=True):
+        self._is_master = is_master
         self["name_task"] = name_task
         if int(os.environ["NUM_GPUS_PER_NODE"]) > 0:
             self["devices"] = -1
@@ -51,14 +51,20 @@ class BaseConfig(dict):
             path = Path(sys.argv[1])
         else:
             path = Path(param_path)
+        self.set_defaults()
         self.read_from_yaml_and_set_default(path, name_task)
         # TODO(vatai): create base trainer
         print("WARRNING: seed not set.  This will be implemented in trainer.base class")
 
     def init_experiment(self, cluster_env):
-        self._is_master = cluster_env.global_rank() == 0
         self.add_distributed_info(cluster_env.world_size())
         self.maybe_create_unique_path()
+        if "process_group_backend" in self["ddp_strategy_params"]:
+            _logger = logging.getLogger(__name__)
+            _logger.warning(
+                f"'ddp_strategy_params.process_group_backend' was defined in the config file but will be ignore! Environment variable 'PROTONN_DISTRIBUTED_BACKEND={cluster_env.distributed_backend}' takes precedence!"
+            )
+        self["ddp_strategy_params"]["process_group_backend"] = cluster_env.distributed_backend
         cluster_env.barrier()
 
     def get_run_folder(self):
@@ -94,7 +100,6 @@ class BaseConfig(dict):
 
     # TODO: we have near identical method in langmo
     def read_from_yaml_and_set_default(self, path, name_project):
-        self.set_defaults()
         self["name_project"] = name_project
         self["timestamp"] = get_time_str()
         _logger = logging.getLogger(__name__)
@@ -125,4 +130,5 @@ class BaseConfig(dict):
         self.defaults = dict()
         self.defaults["seed"] = 0
         self.defaults["create_unique_path"] = True
+        self.defaults["ddp_strategy_params"] = {}
         self.required_options = set()

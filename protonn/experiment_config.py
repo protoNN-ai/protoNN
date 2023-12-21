@@ -34,7 +34,7 @@ def load_yaml_config(path_config):
 
 
 class BaseConfig(dict):
-    def __init__(self, name_task, cluster_env, param_path=None):
+    def __init__(self, name_task, param_path=None):
         self["name_task"] = name_task
         if int(os.environ["NUM_GPUS_PER_NODE"]) > 0:
             self["devices"] = -1
@@ -52,12 +52,14 @@ class BaseConfig(dict):
         else:
             path = Path(param_path)
         self.set_defaults()
-        self._is_master = cluster_env.global_rank() == 0
         self.read_from_yaml_and_set_default(path, name_task)
-        self.add_distributed_info(cluster_env.world_size())
-        self.maybe_create_unique_path()
         # TODO(vatai): create base trainer
         print("WARRNING: seed not set.  This will be implemented in trainer.base class")
+
+    def init_experiment(self, cluster_env):
+        self._is_master = cluster_env.global_rank() == 0
+        self.add_distributed_info(cluster_env.world_size())
+        self.maybe_create_unique_path()
         cluster_env.barrier()
 
     def get_run_folder(self):

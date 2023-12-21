@@ -51,7 +51,6 @@ class BaseConfig(dict):
             path = Path(sys.argv[1])
         else:
             path = Path(param_path)
-        self.set_defaults()
         self.read_from_yaml_and_set_default(path, name_task)
         # TODO(vatai): create base trainer
         print("WARRNING: seed not set.  This will be implemented in trainer.base class")
@@ -95,6 +94,7 @@ class BaseConfig(dict):
 
     # TODO: we have near identical method in langmo
     def read_from_yaml_and_set_default(self, path, name_project):
+        self.set_defaults()
         self["name_project"] = name_project
         self["timestamp"] = get_time_str()
         _logger = logging.getLogger(__name__)

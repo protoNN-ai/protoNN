@@ -4,10 +4,11 @@ dynamic = ["dependencies", "version"]
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
-version = {attr = "protonn.__version__"}
+version = {attr = "protonn._version.VERSION"}
 
 [tool.setuptools.packages.find]
-include = ["protonn"]
+where = ["."]
+include = ["protonn*"]
 
 [tool.black]
 line-length = 100

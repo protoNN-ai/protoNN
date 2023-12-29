@@ -6,8 +6,8 @@ dynamic = ["dependencies", "version"]
 dependencies = {file = ["requirements.txt"]}
 version = {attr = "protonn.__version__"}
 
-[tool.setuptools]
-packages = ["protonn"]
+[tool.setuptools.packages.find]
+include = ["protonn"]
 
 [tool.black]
 line-length = 100

@@ -5,6 +5,7 @@ import sys
 from pathlib import Path
 
 import yaml
+
 from protonn.utils import get_time_str
 
 
@@ -67,37 +68,6 @@ class BaseConfig(dict):
         self["ddp_strategy_params"]["process_group_backend"] = cluster_env.distributed_backend
         cluster_env.barrier()
 
-    def get_run_folder(self):
-        timestamp = self["timestamp"][:-3]
-        hostname = platform.node().split(".")[0]
-        workers = self["cnt_workers"]
-        # TODO: this might be dynamic
-        lr = self["max_lr"] * self["cnt_workers"]
-        seed = self["seed"]
-        run_folder = f"{timestamp}_w{workers}_lr{lr:.4f}_s{seed}_{hostname}"
-        # TODO: make this trully unique
-        return run_folder
-
-    def maybe_create_unique_path(self):
-        if self["create_unique_path"]:
-            self["path_results"] = os.path.join(self["path_results"], self["name_project"])
-            # TODO: it's hacky, but for the time being for langmo
-            # ideally should be a list of names to concat into path
-            if "model_name" in self:
-                self["path_results"] = os.path.join(self["path_results"], self["model_name"])
-            # TODO: extract nicemodel name from metadata
-            # model_name = self["model_name"].split("/")[-1]
-            # self["path_results"] = os.path.join(self["path_results"], model_name)
-            run_dir = self.get_run_folder()
-            self["path_results"] = os.path.join(self["path_results"], run_dir)
-        else:
-            # TODO: chech if the folder is empty
-            pass
-        if "WANDB_MODE" not in os.environ or os.environ["WANDB_MODE"].lower() != "disabled":
-            if self._is_master:
-                path_wandb = Path(self["path_results"]) / "wandb"
-                path_wandb.mkdir(parents=True, exist_ok=True)
-
     # TODO: we have near identical method in langmo
     def read_from_yaml_and_set_default(self, path, name_project):
         self["name_project"] = name_project
@@ -129,6 +99,9 @@ class BaseConfig(dict):
     def set_defaults(self):
         self.defaults = dict()
         self.defaults["seed"] = 0
-        self.defaults["create_unique_path"] = True
+        self.defaults["path_base"] = "./logs"
+        self.defaults["path_results"] = None
+        # if path results is defined - use it over base
+        # self.defaults["create_unique_path"] = True
         self.defaults["ddp_strategy_params"] = {}
         self.required_options = set()

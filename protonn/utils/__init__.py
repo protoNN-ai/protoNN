@@ -1,4 +1,5 @@
 import datetime
+
 # import re
 import inspect
 import json
@@ -7,6 +8,7 @@ import os
 import pathlib
 import shutil
 import sys
+from pathlib import Path
 
 _LOG = logging.getLogger(__name__)
 
@@ -15,9 +17,9 @@ def describe_var(var):
     # print("called on", var)
     result = ""
     result = f"{type(var).__name__}"
-    if hasattr(var, 'shape'):
+    if hasattr(var, "shape"):
         result += f" shape={var.shape}"
-    elif hasattr(var, '__len__'):
+    elif hasattr(var, "__len__"):
         result += f" len={len(var)}"
     if isinstance(var, tuple) or isinstance(var, list):
         result += "\n"
@@ -31,7 +33,7 @@ def describe_var(var):
         for key in var:
             descr_child = describe_var(var[key])
             lines = descr_child.strip().split("\n")
-            result += f"  {key}:""\n"
+            result += f"  {key}:" "\n"
             for line in lines:
                 result += f"    " + line + "\n"
 
@@ -44,11 +46,18 @@ def get_time_str():
     return s
 
 
+class PathEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Path):
+            return str(obj)
+        return json.JSONEncoder.default(obj)
+
+
 def save_data_json(data, name_file):
     path = os.path.realpath(os.path.dirname(name_file))
     os.makedirs(path, exist_ok=True)
-    s = json.dumps(data, ensure_ascii=False, indent=4, sort_keys=True)
-    f = open(name_file, 'w')
+    s = json.dumps(data, ensure_ascii=False, indent=4, sort_keys=True, cls=PathEncoder)
+    f = open(name_file, "w")
     print(s, file=f)
     f.close()
 
@@ -88,7 +97,7 @@ def save_code(path, stack_level: int = 1):
     os.makedirs(path, exist_ok=True)
     path_caller = _get_caller_folder(stack_level + 1)
     _LOG.debug("path_caller: " + str(path_caller))
-    # major, minor, _, _, _ = 
+    # major, minor, _, _, _ =
     if sys.version_info[:2] < (3, 6):  # TODO: remove this when we drop py 3.5 support
         path_caller = str(path_caller)
     for root, dirs, files in os.walk(path_caller):
@@ -108,4 +117,4 @@ def num_to_str_with_suffix(num):
     while abs(num) >= 1000:
         magnitude += 1
         num /= 1000
-    return '%d%s' % (num, ['', 'K', 'M', 'G', 'T', 'P'][magnitude])
+    return "%d%s" % (num, ["", "K", "M", "G", "T", "P"][magnitude])

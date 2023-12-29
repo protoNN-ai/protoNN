@@ -8,3 +8,6 @@ version = {attr = "protonn.__version__"}
 
 [tool.setuptools]
 packages = ["protonn"]
+
+[tool.black]
+line-length = 100

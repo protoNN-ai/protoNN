@@ -56,10 +56,10 @@ def get_address():
 
 class MPIClusterEnvironment(ClusterEnvironment):
     def __init__(self, **kwargs):
-
         sys.excepthook = global_except_hook
         self.comm = MPI.COMM_WORLD
         self.distributed_backend = os.environ["PROTONN_DISTRIBUTED_BACKEND"]
+
         self.ranks_per_node = int(os.environ["NUM_GPUS_PER_NODE"])
         if self.ranks_per_node == 0:
             self.ranks_per_node = 1
@@ -112,3 +112,7 @@ class MPIClusterEnvironment(ClusterEnvironment):
 
     def barrier(self) -> None:
         self.comm.barrier()
+
+    @property
+    def is_master(self):
+        return self.global_rank() == 0

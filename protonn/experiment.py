@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 from protonn.pl.cluster_mpi import MPIClusterEnvironment
 
@@ -17,9 +18,9 @@ class Experiment:
         if self.params["path_results"] is None:
             self.params["path_results"] = self.params.get_run_folder()
         if self.is_master:
-            self.params["path_results"].mkdir(parents=True, exist_ok=True)
+            Path(self.params["path_results"]).mkdir(parents=True, exist_ok=True)
             if "WANDB_MODE" not in os.environ or os.environ["WANDB_MODE"].lower() != "disabled":
-                path_wandb = self.params["path_results"] / "wandb"
+                path_wandb = Path(self.params["path_results"]) / "wandb"
                 path_wandb.mkdir(parents=True, exist_ok=True)
 
     # load config

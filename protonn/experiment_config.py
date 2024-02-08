@@ -37,6 +37,7 @@ class BaseConfig(dict):
     def __init__(self, name_task, param_path=None, is_master=True):
         self._is_master = is_master
         self["name_task"] = name_task
+        self.defaults["cnt_gpus_per_node"] = int(os.environ["NUM_GPUS_PER_NODE"])
         if int(os.environ["NUM_GPUS_PER_NODE"]) > 0:
             self["devices"] = -1
             self["accelerator"] = "gpu"

@@ -1,12 +1,10 @@
 import logging
 import os
-
 # import platform
 import sys
 from pathlib import Path
 
 import yaml
-
 from protonn.utils import get_time_str
 
 
@@ -56,18 +54,18 @@ class BaseConfig(dict):
             path = Path(param_path)
         self.set_defaults()
         self.read_from_yaml_and_set_default(path, name_task)
+        if "process_group_backend" in self["ddp_strategy_params"]:
+            _logger = logging.getLogger(__name__)
+            _logger.warning(
+                f"'ddp_strategy_params.process_group_backend' was defined in the config file but will be ignore! Environment variable 'PROTONN_DISTRIBUTED_BACKEND={os.environ['PROTONN_DISTRIBUTED_BACKEND']} takes precedence!"
+            )
+        self["ddp_strategy_params"]["process_group_backend"] = os.environ["PROTONN_DISTRIBUTED_BACKEND"]
         # TODO(vatai): create base trainer
         print("WARRNING: seed not set.  This will be implemented in trainer.base class")
 
     def init_experiment(self, cluster_env):
         self.add_distributed_info(cluster_env.world_size())
         self.maybe_create_unique_path()
-        if "process_group_backend" in self["ddp_strategy_params"]:
-            _logger = logging.getLogger(__name__)
-            _logger.warning(
-                f"'ddp_strategy_params.process_group_backend' was defined in the config file but will be ignore! Environment variable 'PROTONN_DISTRIBUTED_BACKEND={cluster_env.distributed_backend}' takes precedence!"
-            )
-        self["ddp_strategy_params"]["process_group_backend"] = cluster_env.distributed_backend
         cluster_env.barrier()
 
     # TODO: we have near identical method in langmo
